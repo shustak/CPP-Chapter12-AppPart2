@@ -54,7 +54,6 @@ namespace Graph_lib {
 				shapes.erase(shapes.begin() + (i - 1));//&shapes[i-1]);
 	}
 
-
 	void Window::put_on_top(Shape& p) {
 		for (int i = 0; i < shapes.size(); ++i) {
 			if (&p == shapes[i]) {

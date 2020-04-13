@@ -1,63 +1,44 @@
 #include "Simple_window.h" 
 #include "Graph.h" 
-#include "AppPart2.h"
 
-struct Axis_x
+struct custom_Draw_Window
 {
-    Axis_x(Simple_window& win, const Point& pos, int w, int h, const std::string& title)
+    Simple_window win;
+       
+    custom_Draw_Window(const Point& posForWindow, int windowHigh, int windowWidth, const std::string& windowTitle)
+        :win{ posForWindow, windowHigh, windowWidth, windowTitle } {}
+
+    void Axis_x(const Point& posForAxisX, int axisLenght_x, int axisDivision_x, const std::string& axisTitle_x) 
     {
-        static Axis xa(Axis::x, pos, w, h, title);
+        Axis xa(Axis::x, posForAxisX, axisLenght_x, axisDivision_x, axisTitle_x);
         xa.set_color(Color::dark_blue);
         win.attach(xa);
-        win.wait_for_button();
-    }       
-};
+    }      
 
-struct Axis_y
-{
-    Axis_y(Simple_window& win, const Point& pos, int w, int h, const std::string& title)
+    void Axis_y(const Point& posForAxisY, int axisLenght_y, int axisDivision_y, const std::string& axisTitle_y) 
     {
-        static Axis ya(Axis::y, pos, w, h, title);
+        Axis ya(Axis::y, posForAxisY, axisLenght_y, axisDivision_y, axisTitle_y);
         ya.set_color(Color::dark_red);
         win.attach(ya);
-        win.wait_for_button();
     }
-};
 
-struct Sine_custom
-{
-    Sine_custom(Simple_window& win, const Point& pos, const std::string& title)
+    void Rectagle_c(const Point& posForRectagle, int rectagleWidth, int rectagleHigh) 
     {
-        static Function sine(sin, 0, 100, pos, 1000, 50, 50);
-        sine.set_color(Color::blue);
-        win.attach(sine);
-        win.set_label(title);
-        win.wait_for_button();
-    }
-};
-
-struct  Rectagle_Example
-{
-    Rectagle_Example(Simple_window& win, const Point& pos, int w, int h, const std::string& title)
-    {
-        static Graph_lib::Rectangle r(pos, w, h);
+        Graph_lib::Rectangle r(posForRectagle, rectagleWidth, rectagleHigh);
         win.attach(r);
-        win.set_label(title);
-        win.wait_for_button();               
     }
-};
 
-struct  Circle_custom
-{
-    Circle_custom(Simple_window& win, const Point& pos, int rad, const std::string& title)
+    void Circle_c(const Point& posForCircle, int radius) 
     {
-        static Circle c(pos, rad);
+        Circle c(posForCircle, radius);
         win.attach(c);
-        win.set_label(title);
+    }
+
+    void wait_for_button()
+    {
         win.wait_for_button();
     }
 };
-
 
 int main()
 {
@@ -65,26 +46,28 @@ int main()
     try{
     //Create Window
     Point t1(100, 100);
-    Simple_window win(t1, 800, 600, "My Window");
+    custom_Draw_Window win2(t1, 800, 600, "My Window");
     
     //Create axis X
     Point tl(20, 300);
-    Axis_x win_x { win, tl, 560, 20, "x axis" };
-   
+    win2.Axis_x (tl, 560, 20, "x axis");
+    //win.wait_for_button();
+
     //Create axis Y
-    Axis_y win_y{ win, tl, 280, 10, "y axis" };
-    
-    //Draw sine
-    Point sinP(20, 150);
-    Sine_custom sinC{ win, sinP,  "My Window2" };
-   
+    win2.Axis_y(tl, 280, 10, "y axis");
+    //win.wait_for_button();
+      
     //Draw rectagle
     Point r1(200, 200);
-    Rectagle_Example rec{ win, r1, 150, 100, "My Window3" };
-    
+    Point r2(100, 100);
+    win2.Rectagle_c(r1, 150, 100);
+    win2.Rectagle_c(r2, 250, 250);
+    win2.wait_for_button();
+
     //Draw Cicle
     Point c1(350, 350);
-    Circle_custom cicle { win, c1, 100, "My Window4"};
+    win2.Circle_c(c1, 100);
+    win2.wait_for_button();
     }
     catch (exception& e) {
         return 1;
